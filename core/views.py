@@ -266,3 +266,7 @@ def create_establishment(request):
     }
     
     return render(request, 'core/create_establishment.html', context)
+
+
+def landing(request):
+    return render(request, 'core/landing.html')

@@ -22,4 +22,7 @@ urlpatterns = [
     path('establishment/dashboard/', views.establishment_dashboard, name='establishment_dashboard'),
     path('establishment/create/', views.create_establishment, name='create_establishment'),
     path('timeslot/create/', views.create_timeslot, name='create_timeslot'),
+    
+    # Landing
+    path('landing/', views.landing, name='landing'),
 ]
