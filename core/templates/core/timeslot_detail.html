@@ -1,0 +1,175 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="{% url 'index' %}" class="inline-flex items-center text-slate-600 hover:text-indigo-600 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Retour
+    </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Content -->
+    <div class="lg:col-span-2">
+        <!-- Hero Image -->
+        <div class="h-64 md:h-96 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl overflow-hidden mb-6 shadow-2xl relative">
+            {% if time_slot.establishment.logo %}
+                <img src="{{ time_slot.establishment.logo.url }}" alt="{{ time_slot.establishment.name }}" class="w-full h-full object-cover">
+            {% else %}
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-white text-8xl font-bold opacity-20">{{ time_slot.establishment.name.0 }}</span>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Title & Info -->
+        <div class="bg-white rounded-3xl p-8 shadow-lg mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                {{ time_slot.title }}
+            </h1>
+            
+            <div class="flex items-center text-slate-600 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <span class="text-lg">{{ time_slot.establishment.name }} • {{ time_slot.establishment.city }}</span>
+            </div>
+            
+            {% if time_slot.description %}
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    {{ time_slot.description }}
+                </p>
+            {% endif %}
+            
+            <!-- Date & Time -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="glass rounded-2xl p-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-indigo-600 mr-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                    <div>
+                        <p class="text-sm text-slate-600">Date</p>
+                        <p class="font-semibold text-slate-900">{{ time_slot.date|date:"l d F Y" }}</p>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl p-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-indigo-600 mr-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <p class="text-sm text-slate-600">Horaires</p>
+                        <p class="font-semibold text-slate-900">{{ time_slot.start_time|time:"H:i" }} - {{ time_slot.end_time|time:"H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Amenities -->
+            <div class="mb-6">
+                <h3 class="font-semibold text-slate-900 mb-3">Équipements disponibles</h3>
+                <div class="flex flex-wrap gap-3">
+                    {% if time_slot.establishment.wifi_available %}
+                        <div class="glass rounded-2xl px-4 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-indigo-600 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z" />
+                            </svg>
+                            <span class="font-medium text-slate-900">WiFi Gratuit</span>
+                        </div>
+                    {% endif %}
+                    {% if time_slot.establishment.power_outlets %}
+                        <div class="glass rounded-2xl px-4 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-600 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                            </svg>
+                            <span class="font-medium text-slate-900">Prises électriques</span>
+                        </div>
+                    {% endif %}
+                    {% if time_slot.establishment.quiet_zone %}
+                        <div class="glass rounded-2xl px-4 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-purple-600 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="font-medium text-slate-900">Zone silencieuse</span>
+                        </div>
+                    {% endif %}
+                    {% if time_slot.establishment.free_coffee %}
+                        <div class="glass rounded-2xl px-4 py-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-amber-600 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.38a48.474 48.474 0 00-6-.37c-2.032 0-4.034.125-6 .37m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
+                            </svg>
+                            <span class="font-medium text-slate-900">Café offert</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Establishment Info -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="font-semibold text-slate-900 mb-3">À propos de l'établissement</h3>
+                {% if time_slot.establishment.description %}
+                    <p class="text-slate-600 mb-4">{{ time_slot.establishment.description }}</p>
+                {% endif %}
+                <p class="text-slate-600">
+                    <span class="font-medium text-slate-900">Adresse :</span> {{ time_slot.establishment.address }}, {{ time_slot.establishment.city }}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar - Booking Card -->
+    <div class="lg:col-span-1">
+        <div class="bg-white rounded-3xl p-6 shadow-lg sticky top-24">
+            <!-- Price -->
+            <div class="text-center mb-6 pb-6 border-b border-slate-200">
+                <p class="text-sm text-slate-600 mb-2">Tarif</p>
+                <p class="text-3xl font-bold text-indigo-600">{{ time_slot.price_info }}</p>
+                <p class="text-xs text-slate-500 mt-2">Paiement sur place</p>
+            </div>
+            
+            <!-- Capacity -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-600">Places disponibles</span>
+                    <span class="font-bold text-slate-900 text-lg">{{ available_places }} / {{ time_slot.total_capacity }}</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                    {% if time_slot.total_capacity > 0 %}
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full rounded-full transition-all" style="width: calc({{ available_places }} / {{ time_slot.total_capacity }} * 100%)"></div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Book Button -->
+            {% if user.is_authenticated %}
+                {% if available_places > 0 %}
+                    <a href="{% url 'book_timeslot' time_slot.pk %}" class="block w-full bg-indigo-600 text-white text-center px-6 py-4 rounded-2xl font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
+                        Réserver maintenant
+                    </a>
+                {% else %}
+                    <button disabled class="block w-full bg-slate-300 text-slate-500 text-center px-6 py-4 rounded-2xl font-semibold cursor-not-allowed">
+                        Complet
+                    </button>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="block w-full bg-indigo-600 text-white text-center px-6 py-4 rounded-2xl font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
+                    Connexion pour réserver
+                </a>
+            {% endif %}
+            
+            <!-- Info -->
+            <div class="mt-6 p-4 glass rounded-2xl">
+                <p class="text-sm text-slate-600 flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-indigo-600 flex-shrink-0 mt-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                    </svg>
+                    <span>Réservation gratuite sur l'application. Paiement uniquement sur place selon les conditions de l'établissement.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

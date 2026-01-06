@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="{% url 'establishment_dashboard' %}" class="inline-flex items-center text-slate-600 hover:text-indigo-600 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Retour au dashboard
+    </a>
+</div>
+
+<div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+            Créer un Établissement
+        </h1>
+        <p class="text-slate-600">
+            Ajoutez votre bar, café ou restaurant
+        </p>
+    </div>
+    
+    <div class="bg-white rounded-3xl p-8 shadow-lg">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Name -->
+            <div class="mb-6">
+                <label for="{{ form.name.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Nom de l'établissement *
+                </label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.name.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Type -->
+            <div class="mb-6">
+                <label for="{{ form.establishment_type.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Type d'établissement *
+                </label>
+                {{ form.establishment_type }}
+                {% if form.establishment_type.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.establishment_type.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Address -->
+            <div class="mb-6">
+                <label for="{{ form.address.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Adresse *
+                </label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.address.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- City -->
+            <div class="mb-6">
+                <label for="{{ form.city.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Ville *
+                </label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.city.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Description -->
+            <div class="mb-6">
+                <label for="{{ form.description.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Description
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Logo -->
+            <div class="mb-6">
+                <label for="{{ form.logo.id_for_label }}" class="block text-slate-900 font-semibold mb-2">
+                    Logo de l'établissement
+                </label>
+                <input 
+                    type="file" 
+                    name="logo" 
+                    id="{{ form.logo.id_for_label }}"
+                    accept="image/*"
+                    class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition bg-white"
+                >
+                {% if form.logo.errors %}
+                    <p class="text-red-600 text-sm mt-2">{{ form.logo.errors.0 }}</p>
+                {% endif %}
+            </div>
+            
+            <!-- Amenities -->
+            <div class="mb-6">
+                <p class="block text-slate-900 font-semibold mb-4">Équipements disponibles</p>
+                
+                <div class="space-y-3">
+                    <label class="flex items-center cursor-pointer glass rounded-2xl p-4">
+                        {{ form.wifi_available }}
+                        <span class="ml-3 text-slate-900">WiFi gratuit</span>
+                    </label>
+                    
+                    <label class="flex items-center cursor-pointer glass rounded-2xl p-4">
+                        {{ form.power_outlets }}
+                        <span class="ml-3 text-slate-900">Prises électriques</span>
+                    </label>
+                    
+                    <label class="flex items-center cursor-pointer glass rounded-2xl p-4">
+                        {{ form.quiet_zone }}
+                        <span class="ml-3 text-slate-900">Zone silencieuse</span>
+                    </label>
+                    
+                    <label class="flex items-center cursor-pointer glass rounded-2xl p-4">
+                        {{ form.free_coffee }}
+                        <span class="ml-3 text-slate-900">Café offert</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
+                Créer l'établissement
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
