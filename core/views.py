@@ -76,6 +76,11 @@ def book_timeslot(request, pk):
     """
     Page de réservation d'un créneau.
     """
+    # Bloquer les établissements de réserver
+    if request.user.user_type == 'ETABLISSEMENT':
+        messages.error(request, 'En tant qu\'établissement, vous ne pouvez pas réserver de créneaux.')
+        return redirect('timeslot_detail', pk=pk)
+    
     time_slot = get_object_or_404(TimeSlot, pk=pk)
     
     if request.method == 'POST':
@@ -270,3 +275,61 @@ def create_establishment(request):
 
 def landing(request):
     return render(request, 'core/landing.html')
+
+
+@login_required
+def edit_establishment(request, pk):
+    """
+    Modifier un établissement (réservé au propriétaire).
+    """
+    establishment = get_object_or_404(Establishment, pk=pk)
+    
+    # Vérification de propriété
+    if request.user != establishment.owner:
+        messages.error(request, 'Vous n\'êtes pas autorisé à modifier cet établissement.')
+        return redirect('index')
+    
+    if request.method == 'POST':
+        form = EstablishmentForm(request.POST, request.FILES, instance=establishment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Établissement modifié avec succès !')
+            return redirect('establishment_dashboard')
+    else:
+        form = EstablishmentForm(instance=establishment)
+    
+    context = {
+        'form': form,
+        'establishment': establishment,
+    }
+    
+    return render(request, 'core/edit_establishment.html', context)
+
+
+@login_required
+def edit_timeslot(request, pk):
+    """
+    Modifier un créneau (réservé au propriétaire de l'établissement).
+    """
+    time_slot = get_object_or_404(TimeSlot, pk=pk)
+    
+    # Vérification de propriété via l'établissement
+    if request.user != time_slot.establishment.owner:
+        messages.error(request, 'Vous n\'êtes pas autorisé à modifier ce créneau.')
+        return redirect('index')
+    
+    if request.method == 'POST':
+        form = TimeSlotForm(request.POST, instance=time_slot)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Créneau modifié avec succès !')
+            return redirect('establishment_dashboard')
+    else:
+        form = TimeSlotForm(instance=time_slot)
+    
+    context = {
+        'form': form,
+        'time_slot': time_slot,
+    }
+    
+    return render(request, 'core/edit_timeslot.html', context)

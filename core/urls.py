@@ -21,7 +21,9 @@ urlpatterns = [
     # Dashboard établissement
     path('establishment/dashboard/', views.establishment_dashboard, name='establishment_dashboard'),
     path('establishment/create/', views.create_establishment, name='create_establishment'),
+    path('establishment/<int:pk>/edit/', views.edit_establishment, name='edit_establishment'),
     path('timeslot/create/', views.create_timeslot, name='create_timeslot'),
+    path('timeslot/<int:pk>/edit/', views.edit_timeslot, name='edit_timeslot'),
     
     # Landing
     path('landing/', views.landing, name='landing'),

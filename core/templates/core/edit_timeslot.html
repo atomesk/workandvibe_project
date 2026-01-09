@@ -1,0 +1,233 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Modifier le créneau - Work&Vibe{% endblock %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="mb-6">
+    <a href="{% url 'establishment_dashboard' %}" class="inline-flex items-center text-slate-600 hover:text-indigo-600 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Retour au Dashboard
+    </a>
+</div>
+
+<div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8 text-center">
+        <h1 class="text-4xl font-bold text-slate-900 mb-3">
+            Modifier le créneau
+        </h1>
+        <p class="text-slate-600">
+            Mettez à jour les informations de votre créneau de coworking
+        </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Titre -->
+            <div>
+                <label for="{{ form.title.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                    Titre du créneau *
+                </label>
+                <input 
+                    type="text" 
+                    name="{{ form.title.name }}" 
+                    id="{{ form.title.id_for_label }}"
+                    value="{{ form.title.value|default:'' }}"
+                    class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                    placeholder="Ex: Matinée Productive - WiFi & Café"
+                    required
+                >
+                {% if form.title.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                    Description
+                </label>
+                <textarea 
+                    name="{{ form.description.name }}" 
+                    id="{{ form.description.id_for_label }}"
+                    rows="4"
+                    class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none"
+                    placeholder="Décrivez l'ambiance, les conditions d'accès, etc."
+                >{{ form.description.value|default:'' }}</textarea>
+                {% if form.description.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Date et Horaires -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Date -->
+                <div>
+                    <label for="{{ form.date.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                        Date *
+                    </label>
+                    <input 
+                        type="date" 
+                        name="{{ form.date.name }}" 
+                        id="{{ form.date.id_for_label }}"
+                        value="{{ form.date.value|date:'Y-m-d' }}"
+                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        required
+                    >
+                    {% if form.date.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.date.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Heure de début -->
+                <div>
+                    <label for="{{ form.start_time.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                        Début *
+                    </label>
+                    <input 
+                        type="time" 
+                        name="{{ form.start_time.name }}" 
+                        id="{{ form.start_time.id_for_label }}"
+                        value="{{ form.start_time.value|time:'H:i' }}"
+                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        required
+                    >
+                    {% if form.start_time.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.start_time.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Heure de fin -->
+                <div>
+                    <label for="{{ form.end_time.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                        Fin *
+                    </label>
+                    <input 
+                        type="time" 
+                        name="{{ form.end_time.name }}" 
+                        id="{{ form.end_time.id_for_label }}"
+                        value="{{ form.end_time.value|time:'H:i' }}"
+                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        required
+                    >
+                    {% if form.end_time.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.end_time.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Capacité et Prix -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Capacité totale -->
+                <div>
+                    <label for="{{ form.total_capacity.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                        Capacité totale *
+                    </label>
+                    <input 
+                        type="number" 
+                        name="{{ form.total_capacity.name }}" 
+                        id="{{ form.total_capacity.id_for_label }}"
+                        value="{{ form.total_capacity.value|default:'' }}"
+                        min="1"
+                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        placeholder="Ex: 10"
+                        required
+                    >
+                    {% if form.total_capacity.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.total_capacity.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-slate-500">Nombre de places disponibles</p>
+                </div>
+
+                <!-- Information tarifaire -->
+                <div>
+                    <label for="{{ form.price_info.id_for_label }}" class="block text-sm font-semibold text-slate-900 mb-2">
+                        Information tarifaire *
+                    </label>
+                    <input 
+                        type="text" 
+                        name="{{ form.price_info.name }}" 
+                        id="{{ form.price_info.id_for_label }}"
+                        value="{{ form.price_info.value|default:'' }}"
+                        class="w-full px-4 py-3 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                        placeholder="Ex: Consommation obligatoire, 10€ la matinée, Gratuit"
+                        required
+                    >
+                    {% if form.price_info.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.price_info.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-1 text-sm text-slate-500">Paiement uniquement sur place</p>
+                </div>
+            </div>
+
+            <!-- Options de réservation -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="text-lg font-semibold text-slate-900 mb-4">Options de réservation</h3>
+                
+                <div class="space-y-3">
+                    <!-- Réservation individuelle -->
+                    <label class="flex items-start p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                        <input 
+                            type="checkbox" 
+                            name="{{ form.allow_individual_booking.name }}" 
+                            id="{{ form.allow_individual_booking.id_for_label }}"
+                            {% if form.allow_individual_booking.value %}checked{% endif %}
+                            class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 mt-0.5"
+                        >
+                        <div class="ml-3">
+                            <span class="text-slate-900 font-medium">Réservation individuelle</span>
+                            <p class="text-sm text-slate-600 mt-1">Permettre aux particuliers de réserver</p>
+                        </div>
+                    </label>
+
+                    <!-- Réservation de groupe -->
+                    <label class="flex items-start p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 transition">
+                        <input 
+                            type="checkbox" 
+                            name="{{ form.allow_group_booking.name }}" 
+                            id="{{ form.allow_group_booking.id_for_label }}"
+                            {% if form.allow_group_booking.value %}checked{% endif %}
+                            class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 mt-0.5"
+                        >
+                        <div class="ml-3">
+                            <span class="text-slate-900 font-medium">Réservation de groupe</span>
+                            <p class="text-sm text-slate-600 mt-1">Permettre aux entreprises de réserver plusieurs places</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="p-4 glass rounded-2xl">
+                <div class="flex items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-indigo-600 flex-shrink-0 mr-3 mt-0.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                    </svg>
+                    <p class="text-sm text-slate-600">
+                        Les réservations se font gratuitement via l'application. Le paiement s'effectue uniquement sur place selon vos conditions.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6">
+                <button 
+                    type="submit" 
+                    class="w-full bg-indigo-600 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200 flex items-center justify-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    Enregistrer les modifications
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
